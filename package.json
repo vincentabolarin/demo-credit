@@ -18,7 +18,17 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "husky"
+    "prepare": "husky",
+    "migrate": "knex --knexfile knexfile.ts migrate:latest --env development",
+    "migrate:prod": "knex --knexfile knexfile.ts migrate:latest --env production",
+    "migrate:test": "knex --knexfile knexfile.ts migrate:latest --env test",
+    "migrate:make": "knex --knexfile knexfile.ts migrate:make",
+    "migrate:rollback": "knex --knexfile knexfile.ts migrate:rollback --env development",
+    "migrate:rollback:prod": "knex --knexfile knexfile.ts migrate:rollback --env production",
+    "migrate:status": "knex --knexfile knexfile.ts migrate:status --env development",
+    "seed": "knex --knexfile knexfile.ts seed:run --env development",
+    "seed:make": "knex --knexfile knexfile.ts seed:make",
+    "seed:prod": "knex --knexfile knexfile.ts seed:run --env production"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -29,6 +39,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "axios": "^1.12.2",
     "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.4.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "decimal.js": "^10.6.0",

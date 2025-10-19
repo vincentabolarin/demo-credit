@@ -22,3 +22,8 @@ lerna-debug.log*
 # temp directory
 .temp
 .tmp
+
+# SQLite
+dev.sqlite3
+*.sqlite3
+
