@@ -6,6 +6,8 @@ import configuration from './config/configuration';
 import dotenv from 'dotenv';
 import { AllExceptionsFilter } from './common/filters/all-exceptions-filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import rateLimit from 'express-rate-limit';
+
 dotenv.config();
 
 async function bootstrap() {
@@ -16,6 +18,9 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: '1',
   });
+
+  app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
+  app.enableCors({ origin: true });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
