@@ -4,11 +4,16 @@ import { ValidationPipe, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import configuration from './config/configuration';
 import dotenv from 'dotenv';
+import { AllExceptionsFilter } from './common/filters/all-exceptions-filter';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   const config = configuration();
   const swaggerConfig = new DocumentBuilder()
