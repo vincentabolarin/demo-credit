@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, Logger, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -7,11 +7,15 @@ import dotenv from 'dotenv';
 import { AllExceptionsFilter } from './common/filters/all-exceptions-filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import rateLimit from 'express-rate-limit';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 
 dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
 
   app.setGlobalPrefix('api');
   app.enableVersioning({
