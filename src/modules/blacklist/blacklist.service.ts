@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import axios from 'axios';
-import configuration from 'src/config/configuration';
+import configuration from '../../config/configuration';
 
 interface BlacklistResponseData {
   karma_identity: string | null;
@@ -23,6 +23,19 @@ interface BlacklistResponseData {
   };
 }
 
+interface BlacklistResponseMeta {
+  cost: number;
+  balance: number;
+}
+
+interface BlacklistResponse {
+  status: string;
+  message: string;
+  'mock-response'?: string;
+  data: BlacklistResponseData;
+  meta: BlacklistResponseMeta;
+}
+
 @Injectable()
 export class BlacklistService {
   private baseUrl: string;
@@ -34,13 +47,13 @@ export class BlacklistService {
     this.apiKey = config.adjutor.apiKey;
   }
 
-  async checkBlacklistStatus(email: string): Promise<BlacklistResponseData> {
+  async checkBlacklistStatus(email: string) {
     if (!this.baseUrl || !this.apiKey) {
       throw new UnauthorizedException('Blacklist service not configured');
     }
 
     try {
-      const { data } = await axios.get<BlacklistResponseData>(
+      const { data } = await axios.get<BlacklistResponse>(
         `${this.baseUrl}/verification/karma/${email}`,
         {
           headers: { Authorization: `Bearer ${this.apiKey}` },

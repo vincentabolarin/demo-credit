@@ -50,9 +50,9 @@ export class AuthService {
       body.email,
     );
 
-    if (blacklistData.karma_identity) {
+    if (!blacklistData['mock-response'] && blacklistData.data.karma_identity) {
       throw new InternalServerErrorException(
-        `User blacklisted for reason: ${blacklistData.reason || 'unknown'}`,
+        `User blacklisted for reason: ${blacklistData.data.reason || 'unknown'}`,
       );
     }
 
