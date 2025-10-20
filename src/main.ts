@@ -1,14 +1,31 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe, Logger } from '@nestjs/common';
+import { ValidationPipe, Logger, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import configuration from './config/configuration';
 import dotenv from 'dotenv';
+import { AllExceptionsFilter } from './common/filters/all-exceptions-filter';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import rateLimit from 'express-rate-limit';
+
 dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+
+  app.setGlobalPrefix('api');
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
+
+  app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
+  app.enableCors({ origin: true });
+
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   const config = configuration();
   const swaggerConfig = new DocumentBuilder()
