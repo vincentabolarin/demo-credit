@@ -26,7 +26,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
       if (typeof res === 'string') {
         message = res;
       } else if (typeof res === 'object' && res !== null) {
-        message = (res as { message?: string }).message || JSON.stringify(res);
+        // Handle validation errors where message can be an array
+        const responseObj = res as { message?: string | string[] };
+        message = Array.isArray(responseObj.message)
+          ? responseObj.message.join(', ')
+          : responseObj.message || JSON.stringify(res);
       }
     } else if (exception instanceof Error) {
       message = exception.message;
@@ -34,11 +38,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     this.logger.error(`Status ${status} Error: ${JSON.stringify(message)}`);
 
-    response.status(status).json({
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      message,
-    });
+    const errorResponse = {
+      success: false,
+      message: message,
+      error: {
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+      },
+    };
+
+    response.status(status).json(errorResponse);
   }
 }

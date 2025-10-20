@@ -17,7 +17,7 @@ export default () => ({
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
   },
   adjutor: {
-    baseUrl: process.env.ADJUTOR_API_BASE || '',
+    baseUrl: process.env.ADJUTOR_API_BASE_URL || '',
     apiKey: process.env.ADJUTOR_API_KEY || '',
   },
 });
