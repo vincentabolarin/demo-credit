@@ -8,8 +8,8 @@ export default () => ({
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'demo_credit',
-    fileName: process.env.DB_FILENAME || './dev.sqlite3',
-    testClient: process.env.DB_CLIENT || 'sqlite3',
+    devFileName: process.env.DB_FILENAME || './dev.sqlite3',
+    devClient: process.env.DB_CLIENT || 'better-sqlite3',
     testFilename: process.env.DB_FILENAME || ':memory:',
   },
   jwt: {

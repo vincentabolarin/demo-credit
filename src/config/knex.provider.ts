@@ -13,8 +13,19 @@ export const knexProvider: Provider = {
     if (env === 'test') {
       return Promise.resolve(
         knex({
-          client: config.db.testClient,
+          client: config.db.devClient,
           connection: { filename: config.db.testFilename },
+          useNullAsDefault: true,
+          pool: { min: 1, max: 1 },
+        }),
+      );
+    }
+
+    if (env === 'development') {
+      return Promise.resolve(
+        knex({
+          client: config.db.devClient,
+          connection: { filename: config.db.devFileName },
           useNullAsDefault: true,
           pool: { min: 1, max: 1 },
         }),
