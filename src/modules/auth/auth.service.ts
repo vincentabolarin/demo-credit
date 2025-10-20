@@ -11,12 +11,14 @@ import { Knex } from 'knex';
 import { User, UserWithoutPassword } from '../users/users.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { UserResponseDto } from './dto/auth-response.dto';
+import { BlacklistService } from '../blacklist/blacklist.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(KNEX_CONNECTION) private readonly knex: Knex,
     private readonly jwtService: JwtService,
+    private blacklistService: BlacklistService,
   ) {}
 
   // Helper method to transform database user to response format
@@ -44,6 +46,16 @@ export class AuthService {
     phone?: string;
     password: string;
   }) {
+    const blacklistData = await this.blacklistService.checkBlacklistStatus(
+      body.email,
+    );
+
+    if (blacklistData.karma_identity) {
+      throw new InternalServerErrorException(
+        `User blacklisted for reason: ${blacklistData.reason || 'unknown'}`,
+      );
+    }
+
     const existing = await this.knex<User>('users')
       .where({ email: body.email })
       .first();
