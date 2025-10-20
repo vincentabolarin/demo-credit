@@ -8,10 +8,11 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { KNEX_CONNECTION } from '../../config/knex.provider';
 import { Knex } from 'knex';
-import { User, UserWithoutPassword } from '../users/users.interface';
+// import { User, UserWithoutPassword } from '../users/users.interface';
 import { v4 as uuidv4 } from 'uuid';
 import { UserResponseDto } from './dto/auth-response.dto';
 import { BlacklistService } from '../blacklist/blacklist.service';
+import { User, UserWithoutPassword } from './interfaces/user.interface';
 
 @Injectable()
 export class AuthService {
