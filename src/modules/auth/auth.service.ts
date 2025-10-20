@@ -1,11 +1,16 @@
-import { Injectable, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { KNEX_CONNECTION } from '../../config/knex.provider';
 import { Knex } from 'knex';
 import { User, UserWithoutPassword } from '../users/users.interface';
 import { v4 as uuidv4 } from 'uuid';
-import { UserResponseDto } from './interfaces/user.interface';
+import { UserResponseDto } from './dto/auth-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -43,13 +48,12 @@ export class AuthService {
       .where({ email: body.email })
       .first();
 
-    if (existing) throw new Error('User already exists');
+    if (existing) throw new ConflictException('User already exists');
 
     const hashed = await bcrypt.hash(body.password, 10);
     const userId = uuidv4();
     const walletId = uuidv4();
 
-    // Use transaction to ensure both user and wallet are created
     const user = await this.knex.transaction(async (trx) => {
       await trx<User>('users').insert({
         id: userId,
@@ -70,7 +74,7 @@ export class AuthService {
       return trx<User>('users').where({ id: userId }).first();
     });
 
-    if (!user) throw new Error('User creation failed');
+    if (!user) throw new InternalServerErrorException('User creation failed');
 
     const accessToken = this.generateToken(user);
 
