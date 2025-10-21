@@ -11,7 +11,7 @@ export interface User {
 
 export type UserWithoutPassword = Omit<User, 'password'>;
 
-export interface UserResponseDto {
+export interface FormattedUser {
   id: string;
   email: string;
   firstName: string;

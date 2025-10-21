@@ -9,9 +9,18 @@ import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { AllExceptionsFilter } from './common/filters/all-exceptions-filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { TransactionsModule } from './modules/transaction/transactions.module';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
-  imports: [DatabaseModule, AuthModule, BlacklistModule, WalletsModule],
+  imports: [
+    DatabaseModule,
+    HealthModule,
+    AuthModule,
+    BlacklistModule,
+    WalletsModule,
+    TransactionsModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

@@ -1,4 +1,5 @@
 export interface Transaction {
+  id: string;
   reference: string;
   from_wallet_id: string | null;
   to_wallet_id: string | null;

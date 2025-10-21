@@ -65,6 +65,7 @@ export class WalletsService {
 
       const reference = `FUND-${uuidv4()}`;
       await trx<Transaction>('transactions').insert({
+        id: uuidv4(),
         reference,
         from_wallet_id: null,
         to_wallet_id: wallet.id,
@@ -107,6 +108,7 @@ export class WalletsService {
 
       const reference = `WD-${uuidv4()}`;
       await trx<Transaction>('transactions').insert({
+        id: uuidv4(),
         reference,
         from_wallet_id: wallet.id,
         to_wallet_id: null,
@@ -171,6 +173,7 @@ export class WalletsService {
 
       const reference = `TR-${uuidv4()}`;
       await trx<Transaction>('transactions').insert({
+        id: uuidv4(),
         reference,
         from_wallet_id: fromWallet.id,
         to_wallet_id: toWallet.id,
