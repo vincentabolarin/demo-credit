@@ -32,8 +32,8 @@ export class AuthController {
     description: 'Bad request - User already exists or validation failed',
   })
   async register(@Body() body: RegisterDto) {
-    const user = await this.authService.register(body);
-    return user;
+    const response = await this.authService.register(body);
+    return response;
   }
 
   @Public()

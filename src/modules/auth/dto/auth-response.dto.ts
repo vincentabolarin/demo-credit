@@ -16,14 +16,14 @@ export class UserResponseDto {
   @ApiProperty({ example: '08012345678', required: false })
   phone?: string;
 
-  @ApiProperty({ example: '2025-01-19T10:30:00Z' })
+  @ApiProperty({ example: '2025-10-19T10:30:00Z' })
   createdAt?: Date;
 
-  @ApiProperty({ example: '2025-01-19T10:30:00Z' })
+  @ApiProperty({ example: '2025-10-19T10:30:00Z' })
   updatedAt?: Date;
 }
 
-class RegisterResponseDataDto {
+class AuthResponseDataDto {
   @ApiProperty({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' })
   accessToken: string;
 
@@ -36,12 +36,17 @@ export class RegisterResponseDto {
   message: string;
 
   @ApiProperty({
-    type: () => RegisterResponseDataDto,
+    type: () => AuthResponseDataDto,
   })
-  data: RegisterResponseDataDto;
+  data: AuthResponseDataDto;
 }
 
 export class LoginResponseDto {
-  @ApiProperty({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' })
-  access_token: string;
+  @ApiProperty({ example: 'Login successful' })
+  message: string;
+
+  @ApiProperty({
+    type: () => AuthResponseDataDto,
+  })
+  data: AuthResponseDataDto;
 }

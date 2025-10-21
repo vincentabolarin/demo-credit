@@ -22,8 +22,7 @@ export class AuthService {
     private blacklistService: BlacklistService,
   ) {}
 
-  // Helper method to transform database user to response format
-  private toResponseDto(user: User): UserResponseDto {
+  private toResponseDto(user: UserWithoutPassword): UserResponseDto {
     return {
       id: user.id,
       email: user.email,
@@ -36,7 +35,12 @@ export class AuthService {
   }
 
   generateToken(user: UserWithoutPassword): string {
-    const payload = { email: user.email, sub: user.id };
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+    };
     return this.jwtService.sign(payload);
   }
 
@@ -84,23 +88,22 @@ export class AuthService {
         currency: 'NGN',
       });
 
-      return trx<User>('users').where({ id: userId }).first();
+      return trx<UserWithoutPassword>('users').where({ id: userId }).first();
     });
 
     if (!user) throw new InternalServerErrorException('User creation failed');
 
     const accessToken = this.generateToken(user);
 
+    const userResponse = this.toResponseDto(user);
+
     return {
       message: 'Registration successful',
-      data: { accessToken, user: this.toResponseDto(user) },
+      data: { accessToken, user: userResponse },
     };
   }
 
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<UserWithoutPassword | null> {
+  async validateUser(email: string, password: string) {
     const user = await this.knex<User>('users').where({ email }).first();
     if (!user) return null;
     const match = await bcrypt.compare(password, user.password);
@@ -110,9 +113,12 @@ export class AuthService {
 
   login(user: UserWithoutPassword) {
     const accessToken = this.generateToken(user);
+
+    const userResponse = this.toResponseDto(user);
+
     return {
       message: 'Login successful',
-      accessToken,
+      data: { accessToken, user: userResponse },
     };
   }
 }
