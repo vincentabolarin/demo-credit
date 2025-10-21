@@ -13,7 +13,7 @@ export default () => ({
     testFilename: process.env.DB_FILENAME || ':memory:',
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'change_me',
+    secret: process.env.JWT_SECRET || '',
     expiresIn: process.env.JWT_EXPIRES_IN || '1h',
   },
   adjutor: {

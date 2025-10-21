@@ -6,13 +6,16 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { BlacklistModule } from '../blacklist/blacklist.module';
 
-const config = configuration();
-
 @Module({
   imports: [
-    JwtModule.register({
-      secret: config.jwt.secret,
-      signOptions: { expiresIn: '1h' },
+    JwtModule.registerAsync({
+      useFactory: () => {
+        const config = configuration();
+        return {
+          secret: config.jwt.secret,
+          signOptions: { expiresIn: '1h' },
+        };
+      },
     }),
     BlacklistModule,
   ],

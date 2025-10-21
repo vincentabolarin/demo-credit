@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, Min } from 'class-validator';
+import { IsNumber, IsString, Min } from 'class-validator';
 
 export class TransferDto {
   @ApiProperty({
     description: 'To User ID',
-    example: 'abc123',
+    example: '123e4567-e89b-12d3-a456-426614174000',
   })
-  @IsNumber()
-  toUserId!: number;
+  @IsString()
+  toUserId!: string;
 
   @ApiProperty({
     description: 'Amount',
