@@ -1,11 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
 
+interface HealthCheckResponseBody {
+  success: boolean;
+  message: string;
+  data: {
+    status: 'ok' | 'error';
+    database: 'connected' | 'disconnected';
+    error?: string;
+  };
+  meta?: any;
+}
+
 describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+  let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -16,10 +26,15 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/health (GET) should return health check', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/health')
       .expect(200)
-      .expect('Hello World!');
+      .expect((res) => {
+        const body = res.body as HealthCheckResponseBody;
+        expect(body).toHaveProperty('success', true);
+        expect(body).toHaveProperty('data');
+        expect(body.data).toHaveProperty('status', 'ok');
+      });
   });
 });
