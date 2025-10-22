@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { DatabaseModule } from './config/knex.module';
 import { BlacklistModule } from './modules/blacklist/blacklist.module';
@@ -11,19 +9,20 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions-filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { TransactionsModule } from './modules/transaction/transactions.module';
 import { HealthModule } from './modules/health/health.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
     DatabaseModule,
     HealthModule,
     AuthModule,
+    UsersModule,
     BlacklistModule,
     WalletsModule,
     TransactionsModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
