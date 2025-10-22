@@ -22,6 +22,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src/**/*", "migrations/**/*", "seeds/**/*", "knexfile.ts"],
+  "include": [
+    "src/**/*",
+    "migrations/**/*",
+    "seeds/**/*",
+    "knexfile.ts",
+    "test/**/*.e2e-spec.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }
