@@ -4,7 +4,6 @@ import { ValidationPipe, Logger, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import configuration from './config/configuration';
 import dotenv from 'dotenv';
-import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
@@ -17,7 +16,6 @@ async function bootstrap() {
     defaultVersion: '1',
   });
 
-  app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
   app.enableCors({ origin: true });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
@@ -35,9 +33,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
 
+  const baseUrl = config.baseUrl;
   const port = config.port;
   await app.listen(port);
-  Logger.log(`Application is running on: http://localhost:${port}`);
-  Logger.log(`Swagger docs available at: http://localhost:${port}/docs`);
+  Logger.log(`Application is running on: ${baseUrl}:${port}`);
+  Logger.log(`Swagger docs available at: ${baseUrl}:${port}/docs`);
 }
 void bootstrap();

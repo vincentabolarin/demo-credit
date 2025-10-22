@@ -1,5 +1,6 @@
 export default () => ({
   nodeEnv: process.env.NODE_ENV || 'development',
+  baseUrl: process.env.BASE_URL || 'localhost',
   port: Number(process.env.PORT || 4000),
   db: {
     client: process.env.DB_CLIENT || 'mysql2',
