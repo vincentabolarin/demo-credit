@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { TransactionUserDto } from './transaction-user.dto';
+import { TransactionUser } from '../interfaces/transactions.interface';
 
 export class TransactionsResponseDto {
   @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
@@ -7,11 +9,11 @@ export class TransactionsResponseDto {
   @ApiProperty({ example: 'FUND-123e4567-e89b-12d3-a456-426614174000' })
   reference: string;
 
-  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
-  fromWalletId: string;
+  @ApiProperty({ type: () => TransactionUserDto, nullable: true })
+  fromUser: TransactionUser | null;
 
-  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
-  toWalletId: string;
+  @ApiProperty({ type: () => TransactionUserDto, nullable: true })
+  toUser: TransactionUser | null;
 
   @ApiProperty({ example: 100.0 })
   amount: number;
