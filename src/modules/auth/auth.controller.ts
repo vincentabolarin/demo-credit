@@ -12,9 +12,11 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { RegisterDto } from './dto/register.dto';
 import { LoginResponseDto, RegisterResponseDto } from './dto/auth-response.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Auth')
 @Controller('auth')
+@Throttle({ default: { limit: 1, ttl: 3000 } })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

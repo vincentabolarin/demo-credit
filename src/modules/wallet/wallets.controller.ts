@@ -24,10 +24,12 @@ import {
   TransferResponseDto,
   WithdrawResponseDto,
 } from './dto/wallet-response.dto';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('Wallets')
 @Controller('wallets')
 @ApiBearerAuth()
+@Throttle({ default: { limit: 1, ttl: 3000 } })
 export class WalletsController {
   constructor(private readonly walletService: WalletsService) {}
 

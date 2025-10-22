@@ -10,9 +10,18 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { TransactionsModule } from './modules/transaction/transactions.module';
 import { HealthModule } from './modules/health/health.module';
 import { UsersModule } from './modules/users/users.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000,
+          limit: 20,
+        },
+      ],
+    }),
     DatabaseModule,
     HealthModule,
     AuthModule,
@@ -23,6 +32,10 @@ import { UsersModule } from './modules/users/users.module';
   ],
   controllers: [],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
