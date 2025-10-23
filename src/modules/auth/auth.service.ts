@@ -1,0 +1,123 @@
+import {
+  Injectable,
+  Inject,
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import bcrypt from 'bcrypt';
+import { KNEX_CONNECTION } from '../../config/knex.provider';
+import { Knex } from 'knex';
+import { v4 as uuidv4 } from 'uuid';
+import { UserResponseDto } from './dto/auth-response.dto';
+import { BlacklistService } from '../blacklist/blacklist.service';
+import { User, UserWithoutPassword } from './interfaces/user.interface';
+
+@Injectable()
+export class AuthService {
+  constructor(
+    @Inject(KNEX_CONNECTION) public readonly knex: Knex,
+    public readonly jwtService: JwtService,
+    public blacklistService: BlacklistService,
+  ) {}
+
+  private toResponseDto(user: UserWithoutPassword): UserResponseDto {
+    return {
+      id: user.id,
+      email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      phone: user.phone,
+      createdAt: user.created_at,
+      updatedAt: user.updated_at,
+    };
+  }
+
+  generateToken(user: UserWithoutPassword): string {
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+    };
+    return this.jwtService.sign(payload);
+  }
+
+  async register(body: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    password: string;
+  }) {
+    const blacklistData = await this.blacklistService.checkBlacklistStatus(
+      body.email,
+    );
+
+    if (!blacklistData['mock-response'] && blacklistData.data.karma_identity) {
+      throw new InternalServerErrorException(
+        `User blacklisted for reason: ${blacklistData.data.reason || 'unknown'}`,
+      );
+    }
+
+    const existing = await this.knex<User>('users')
+      .where({ email: body.email })
+      .first();
+
+    if (existing) throw new ConflictException('User already exists');
+
+    const hashed = await bcrypt.hash(body.password, 10);
+    const userId = uuidv4();
+    const walletId = uuidv4();
+
+    const user = await this.knex.transaction(async (trx) => {
+      await trx<User>('users').insert({
+        id: userId,
+        email: body.email,
+        password: hashed,
+        first_name: body.firstName,
+        last_name: body.lastName,
+        phone: body.phone,
+      });
+
+      await trx('wallets').insert({
+        id: walletId,
+        user_id: userId,
+        balance: 0,
+        currency: 'NGN',
+      });
+
+      return trx<UserWithoutPassword>('users').where({ id: userId }).first();
+    });
+
+    if (!user) throw new InternalServerErrorException('User creation failed');
+
+    const accessToken = this.generateToken(user);
+
+    const userResponse = this.toResponseDto(user);
+
+    return {
+      message: 'Registration successful',
+      data: { accessToken, user: userResponse },
+    };
+  }
+
+  async validateUser(email: string, password: string) {
+    const user = await this.knex<User>('users').where({ email }).first();
+    if (!user) return null;
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return null;
+    return user;
+  }
+
+  login(user: UserWithoutPassword) {
+    const accessToken = this.generateToken(user);
+
+    const userResponse = this.toResponseDto(user);
+
+    return {
+      message: 'Login successful',
+      data: { accessToken, user: userResponse },
+    };
+  }
+}
