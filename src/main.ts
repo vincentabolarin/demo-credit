@@ -33,10 +33,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
 
-  const baseUrl = config.baseUrl;
   const port = config.port;
   await app.listen(port, '0.0.0.0');
-  Logger.log(`Application is running on: ${baseUrl}:${port}`);
-  Logger.log(`Swagger docs available at: ${baseUrl}:${port}/docs`);
+  Logger.log(`Application is running on port ${port}`);
+  Logger.log(`Swagger docs available at /docs`);
 }
 void bootstrap();
