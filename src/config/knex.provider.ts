@@ -41,6 +41,9 @@ export const knexProvider: Provider = {
           user: config.db.user,
           password: config.db.password,
           database: config.db.database,
+          ssl: {
+            rejectUnauthorized: false,
+          },
         },
         pool: { min: 2, max: 10 },
       }),
