@@ -13,6 +13,9 @@ const common: Record<string, Knex.Config> = {
       user: process.env.DB_USER || 'root',
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_NAME || 'demo_credit',
+      ssl: {
+        rejectUnauthorized: true,
+      },
     },
     migrations: {
       directory: './migrations',
