@@ -4,7 +4,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable('wallets', (table) => {
     table.uuid('id').primary();
     table
-      .integer('user_id')
+      .uuid('user_id')
       .unsigned()
       .notNullable()
       .references('id')
