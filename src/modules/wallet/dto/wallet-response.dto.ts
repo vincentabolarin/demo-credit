@@ -51,3 +51,11 @@ export class TransferResponseDto {
   @ApiProperty({ type: () => WalletResponseDto })
   data: WalletResponseDto;
 }
+
+export class WalletNotFoundResponseDto {
+  @ApiProperty({ example: 'Wallet not found' })
+  message: string;
+
+  @ApiProperty({ type: () => WalletResponseDto })
+  data: WalletResponseDto;
+}
