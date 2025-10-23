@@ -40,6 +40,14 @@ This project was built focusing on wallet operations, blacklist verification, an
 
 ---
 
+## 🧩 Database Design
+
+Below is the Entity-Relationship Diagram for the Demo Credit application:
+
+![E-R Diagram](assets/e-r-diagram.png)
+
+---
+
 ## 🔌 Setup Instructions
 
 ### 1. Clone Repository
