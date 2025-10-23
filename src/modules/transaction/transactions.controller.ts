@@ -8,9 +8,9 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { type FormattedUser } from '../auth/interfaces/user.interface';
-import { TransactionsService } from './transactions.service';
 import { MyTransactionsResponseDto } from './dto/transactions-response.dto';
 import { GetTransactionsQueryDto } from './dto/get-transactions-query.dto';
+import { TransactionsService } from './transactions.service';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -35,7 +35,7 @@ export class TransactionsController {
     @Query() query: GetTransactionsQueryDto,
   ) {
     const response = this.transactionsService.getTransactionsForUser(
-      user,
+      user.id,
       query,
     );
 
