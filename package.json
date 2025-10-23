@@ -25,7 +25,10 @@
     "migrate:make": "knex --knexfile knexfile.ts migrate:make",
     "migrate:rollback": "knex --knexfile knexfile.ts migrate:rollback --env development",
     "migrate:rollback:prod": "knex --knexfile knexfile.ts migrate:rollback --env production",
+    "migrate:rollback:all": "knex --knexfile knexfile.ts migrate:rollback --all --env development",
+    "migrate:rollback:all:prod": "knex --knexfile knexfile.ts migrate:rollback --all --env production",
     "migrate:status": "knex --knexfile knexfile.ts migrate:status --env development",
+    "migrate:status:prod": "knex --knexfile knexfile.ts migrate:status --env production",
     "seed": "knex --knexfile knexfile.ts seed:run --env development",
     "seed:make": "knex --knexfile knexfile.ts seed:make",
     "seed:prod": "knex --knexfile knexfile.ts seed:run --env production"
