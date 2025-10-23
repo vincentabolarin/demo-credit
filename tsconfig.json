@@ -20,14 +20,20 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "test/*": ["test/*"]
+    }
   },
   "include": [
     "src/**/*",
     "migrations/**/*",
     "seeds/**/*",
     "knexfile.ts",
-    "test/**/*.e2e-spec.ts"
+    "test/**/*",
+    "test/**/*.e2e-spec.ts",
+    "test-helpers.ts",
+    "jest.config.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

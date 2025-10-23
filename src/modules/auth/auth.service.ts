@@ -16,9 +16,9 @@ import { User, UserWithoutPassword } from './interfaces/user.interface';
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(KNEX_CONNECTION) private readonly knex: Knex,
-    private readonly jwtService: JwtService,
-    private blacklistService: BlacklistService,
+    @Inject(KNEX_CONNECTION) public readonly knex: Knex,
+    public readonly jwtService: JwtService,
+    public blacklistService: BlacklistService,
   ) {}
 
   private toResponseDto(user: UserWithoutPassword): UserResponseDto {

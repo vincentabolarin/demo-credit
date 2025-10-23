@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Knex } from 'knex';
-import { type FormattedUser } from '../auth/interfaces/user.interface';
 import { GetTransactionsQueryDto } from './dto/get-transactions-query.dto';
 import { TransactionsResponseDto } from './dto/transactions-response.dto';
 import { KNEX_CONNECTION } from 'src/config/knex.provider';
@@ -47,16 +46,13 @@ export class TransactionsService {
     };
   }
 
-  async getTransactionsForUser(
-    user: FormattedUser,
-    query: GetTransactionsQueryDto,
-  ) {
+  async getTransactionsForUser(userId: string, query: GetTransactionsQueryDto) {
     const { page, size, type, q } = query;
     const pageValue = Math.max(1, Number(page) || 1);
     const sizeValue = Math.min(100, Math.max(1, Number(size) || 10));
 
     let base = this.knex('transactions').where(function () {
-      this.where('from_user_id', user.id).orWhere('to_user_id', user.id);
+      this.where('from_user_id', userId).orWhere('to_user_id', userId);
     });
 
     if (type) base = base.andWhere('type', type.toUpperCase());
