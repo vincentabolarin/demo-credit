@@ -35,7 +35,7 @@ async function bootstrap() {
 
   const baseUrl = config.baseUrl;
   const port = config.port;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   Logger.log(`Application is running on: ${baseUrl}:${port}`);
   Logger.log(`Swagger docs available at: ${baseUrl}:${port}/docs`);
 }
