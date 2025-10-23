@@ -142,7 +142,7 @@ Focused on service-level business logic.
 
 This project was developed by Vincent Abolarin.
 All rights reserved © 2025
-Demo Credit Wallet.
+Demo Credit.
 
 ---
 
