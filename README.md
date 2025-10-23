@@ -29,14 +29,14 @@ This project was built focusing on wallet operations, blacklist verification, an
 
 ## 🧱 Tech Stack
 
-**Runtime**- Node.js (LTS)
-**Framework** - NestJS
-**Language** - TypeScript
-**ORM / Query Builder** - Knex.js
-**Database** - MySQL
-**HTTP Client** - Axios (for Adjutor Karma API)
-**Testing** - Jest
-**Authentication** - JWT
+- **Runtime** - Node.js (LTS)
+- **Framework** - NestJS
+- **Language** - TypeScript
+- **ORM / Query Builder** - Knex.js
+- **Database** - MySQL
+- **HTTP Client** - Axios (for Adjutor Karma API)
+- **Testing** - Jest
+- **Authentication** - JWT
 
 ---
 
@@ -61,7 +61,8 @@ DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=password
 DB_NAME=demo_credit_db
-KARMA_API_BASE_URL=https://api.adjutor.lendsqr.com KARMA_API_KEY=your_adjutor_api_key
+KARMA_API_BASE_URL=https://api.adjutor.lendsqr.com
+KARMA_API_KEY=your_adjutor_api_key
 PORT=3000
 ```
 
