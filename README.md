@@ -1,98 +1,143 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 💰 Demo Credit Wallet Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Demo Credit is a **mobile lending app** built with a wallet system that enables users to receive, hold, transfer, and withdraw funds.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+It forms the financial backbone of a lending platform where loan disbursements and repayments are processed via user wallets.
 
-## Description
+This project was built focusing on wallet operations, blacklist verification, and transactional integrity.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 🚀 Features
 
-```bash
-$ npm install
+- **User Onboarding**
+  - Create an account and a wallet for the user.
+  - Prevent onboarding for blacklisted users via the **Lendsqr Adjutor Karma API**.
+- **Wallet Funding**
+  - Credit wallet balance - deposit or loan disbursement.
+- **Funds Transfer**
+  - Send money between registered users’ wallets.
+  - Atomic transaction handling ensures consistency.
+- **Withdrawal**
+  - Debit wallet balance - repayment or cash withdrawal.
+- **Balance Inquiry**
+  - Fetch real-time wallet balance.
+- **Service-level Unit Tests**
+  - Each business operation (funding, transfer, withdrawal) is unit tested.
+
+---
+
+## 🧱 Tech Stack
+
+**Runtime**- Node.js (LTS)
+**Framework** - NestJS
+**Language** - TypeScript
+**ORM / Query Builder** - Knex.js
+**Database** - MySQL
+**HTTP Client** - Axios (for Adjutor Karma API)
+**Testing** - Jest
+**Authentication** - JWT
+
+---
+
+## 🔌 Setup Instructions
+
+### 1. Clone Repository
+
+`git clone https://github.com/vincentabolarin/demo-credit.git`
+
+### 2. Install Dependencies
+
+`npm install`
+
+### 3. Configure Environment
+
+- Create a `.env` file at the root of the project:
+
+```
+DB_CLIENT=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=password
+DB_NAME=demo_credit_db
+KARMA_API_BASE_URL=https://api.adjutor.lendsqr.com KARMA_API_KEY=your_adjutor_api_key
+PORT=3000
 ```
 
-## Compile and run the project
+### 4. Run Migrations
 
-```bash
-# development
-$ npm run start
+`npx knex migrate:latest`
 
-# watch mode
-$ npm run start:dev
+### 5. Start the Server
 
-# production mode
-$ npm run start:prod
-```
+`npm run start:dev`
 
-## Run tests
+### 6. Run Unit Tests
 
-```bash
-# unit tests
-$ npm run test
+`npm run test`
 
-# e2e tests
-$ npm run test:e2e
+---
 
-# test coverage
-$ npm run test:cov
-```
+## 🔍 Example API Endpoints
 
-## Deployment
+### POST /auth/signup
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Create a new user and wallet
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### POST /wallets/fund
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Fund wallet
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### POST /wallets/transfer
 
-## Resources
+Transfer funds
 
-Check out a few resources that may come in handy when working with NestJS:
+### POST /wallets/withdraw
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Withdraw funds
 
-## Support
+### GET /wallets/mine
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Get logged-in user's wallet
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 📃 Full Postman Documentation
 
-## License
+https://documenter.getpostman.com/view/29041245/2sB3QRp7af
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## 🧠 Key Design Considerations
+
+### Atomic Transactions:
+
+Wallet operations use database transactions to ensure data consistency.
+
+### Blacklist Protection:
+
+Integration with Adjutor Karma API ensures no blacklisted user can onboard.
+
+### Validation and Error Handling:
+
+Centralized response interceptor and exception filter.
+
+### Test Coverage:
+
+Focused on service-level business logic.
+
+---
+
+## 🧾 License
+
+This project was developed by Vincent Abolarin.
+All rights reserved © 2025
+Demo Credit Wallet.
+
+---
+
+## 💡 Author Vincent Abolarin
+
+Senior Software Engineer
+[LinkedIn](https://www.linkedin.com/in/vincentabolarin) · [GitHub](https://www.github.com/vincentabolarin)
