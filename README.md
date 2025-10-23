@@ -44,7 +44,7 @@ This project was built focusing on wallet operations, blacklist verification, an
 
 Below is the Entity-Relationship Diagram for the Demo Credit application:
 
-![E-R Diagram](assets/e-r-diagram.png)
+![E-R Diagram](src/assets/e-r-diagram.png)
 
 ---
 
